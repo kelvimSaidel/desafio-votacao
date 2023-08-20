@@ -5,6 +5,7 @@ import com.github.kelvimSaidel.domain.enums.StatusSessao;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Sessao {
@@ -25,20 +26,19 @@ public class Sessao {
 
     @ManyToOne
     @JoinColumn(name = "id_pauta")
-    @JsonIgnore
     private Pauta pauta;
-
 
     public Sessao() {
     }
 
-    public Sessao(Integer id_sessao, Integer sim, Integer nao, StatusSessao status, LocalDate dt_abertura, LocalDate dt_fechamento) {
+    public Sessao(Integer id_sessao, Integer sim, Integer nao, StatusSessao status, LocalDate dt_abertura, LocalDate dt_fechamento, Pauta pauta) {
         this.id_sessao = id_sessao;
         this.sim = sim;
         this.nao = nao;
         this.status = status;
         this.dt_abertura = dt_abertura;
         this.dt_fechamento = dt_fechamento;
+        this.pauta = pauta;
     }
 
     public Integer getId_sessao() {
@@ -100,14 +100,14 @@ public class Sessao {
 
     @Override
     public String toString() {
-        return "sessaoVotacao{" +
+        return "Sessao{" +
                 "id_sessao=" + id_sessao +
-                ", sim='" + sim + '\'' +
-                ", nao='" + nao + '\'' +
-                ", status='" + status + '\'' +
+                ", sim=" + sim +
+                ", nao=" + nao +
+                ", status=" + status +
                 ", dt_abertura=" + dt_abertura +
                 ", dt_fechamento=" + dt_fechamento +
-                ", pauta=" + getPauta().getNome_pauta() +
+                ", pauta=" + pauta.getId_pauta() +
                 '}';
     }
 }

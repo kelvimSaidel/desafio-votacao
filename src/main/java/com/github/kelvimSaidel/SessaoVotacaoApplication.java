@@ -1,8 +1,10 @@
 package com.github.kelvimSaidel;
 
 
+import com.github.kelvimSaidel.domain.entity.RegistroVotosUsuarios;
 import com.github.kelvimSaidel.domain.enums.StatusSessao;
 import com.github.kelvimSaidel.domain.repository.PautaRepository;
+import com.github.kelvimSaidel.domain.repository.RegistroUsuarioRepository;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import com.github.kelvimSaidel.domain.repository.SessaoRepository;
 import com.github.kelvimSaidel.domain.entity.Pauta;
@@ -14,6 +16,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.Normalizer;
@@ -32,22 +35,28 @@ public class SessaoVotacaoApplication {
     public CommandLineRunner init(@Autowired UsuarioRepository usuarioRepository,
                                   @Autowired PautaRepository pautaRepository,
                                   @Autowired SessaoRepository sessaoRepository,
-                                  @Autowired SessaoController sessaoController ){
+                                  @Autowired SessaoController sessaoController,
+                                  @Autowired RegistroUsuarioRepository registroUsuarioRepository){
         return args -> {
             Usuario usuario1 = new Usuario();
             usuario1.setNome_usuario("Kelvim");
             usuario1.setCpf(123456711);
             usuarioRepository.save(usuario1);
 
-//            Usuario usuario2 = new Usuario();
-//            usuario2.setNome_usuario("Joao");
-//            usuario2.setCpf(123456712);
-//            usuarioRepository.save(usuario2);
-//
+            Usuario usuario2 = new Usuario();
+            usuario2.setNome_usuario("Joao");
+            usuario2.setCpf(123456712);
+            usuarioRepository.save(usuario2);
+
+            Usuario usuario3 = new Usuario();
+            //  usuario3.setId_usuario(2);
+            usuario3.setNome_usuario("Marcelo");
+            usuario3.setCpf(123456712);
+
             Pauta pauta1 = new Pauta();
             pauta1.setNome_pauta("Pauta1");
             pauta1.setUsuario(usuario1);
-
+//
             pautaRepository.save(pauta1);
 
             LocalDate dia = LocalDate.of(2023, Month.AUGUST, 16);
@@ -62,21 +71,65 @@ public class SessaoVotacaoApplication {
 //            sessao.setDt_fechamento(LocalDate.parse(formatador.format(dia)));
             sessao.setDt_fechamento(dia);
             sessaoRepository.save(sessao);
+////
+//            sessaoController.votar(1,1,"NÃO");
+//            sessaoController.votar(2,1,"NÃO");
 //
-        // sessaoController.votar(1,1,"NÃO");
+////           RegistroVotosUsuarios rup = new RegistroVotosUsuarios();
+////           rup.setId_usuario(1);
+////           rup.setPauta(pauta1);
+////
+////
+////            registroUsuarioRepository.save(rup);
+//////
+////            RegistroVotosUsuarios rup1 = new RegistroVotosUsuarios();
+////            rup1.setId_usuario(1);
+////            rup1.setPauta(pauta1);
+////            System.out.println(rup1.toString());
+////            registroUsuarioRepository.save(rup1);
+////
+////
+////            RegistroVotosUsuarios rup2 = new RegistroVotosUsuarios();
+////            rup2.setId_usuario(3);
+////            rup2.setPauta(pauta1);
+////
+////           registroUsuarioRepository.save(rup2);
+//
+//           String verificaResultado = sessaoController.votar(1,1,"NÃO");
 //
 //
-           List<Sessao> sessoes = sessaoRepository.findAll();
-//            Optional<Sessao> sessoes1 = sessaoRepository.findById(1);
-//            System.out.println(sessoes1);
-            sessoes.forEach(System.out::println);
+//            Integer validaUsuario = registroUsuarioRepository.validaUsuarioJavotou(1,1);
+//           Pauta retornapauta = pautaRepository.retornarPautas(1);
+//           System.out.println(validaUsuario);
+//            System.out.println(retornapauta);
+//            System.out.println(verificaResultado);
 //
-           System.out.println(sessoes.toString());
+//
+//
+//
+//
+//
+//
+//
 //
 ////
-////            pautaRepository.save(pauta1);
-//
-
+//        //
+////
+//////
+////           List<Sessao> sessoes = sessaoRepository.findAll();
+//////            Optional<Sessao> sessoes1 = sessaoRepository.findById(1);
+//////            System.out.println(sessoes1);
+////            sessoes.forEach(System.out::println);
+//////
+////           System.out.println(sessoes.toString());
+////
+////            System.out.println(rup2.toString());
+////            System.out.println(rup1.toString());
+////
+//////
+//////            pautaRepository.save(pauta1);
+////
+////
         };
     }
 

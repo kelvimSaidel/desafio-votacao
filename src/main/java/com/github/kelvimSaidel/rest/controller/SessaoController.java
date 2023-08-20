@@ -2,10 +2,12 @@ package com.github.kelvimSaidel.rest.controller;
 
 
 import com.github.kelvimSaidel.domain.entity.Pauta;
+import com.github.kelvimSaidel.domain.entity.RegistroVotosUsuarios;
 import com.github.kelvimSaidel.domain.entity.Sessao;
 import com.github.kelvimSaidel.domain.entity.Usuario;
 import com.github.kelvimSaidel.domain.enums.StatusSessao;
 import com.github.kelvimSaidel.domain.repository.PautaRepository;
+import com.github.kelvimSaidel.domain.repository.RegistroUsuarioRepository;
 import com.github.kelvimSaidel.domain.repository.SessaoRepository;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class SessaoController {
     @Autowired
     private PautaRepository pautaRepository;
 
+    @Autowired
+    private RegistroUsuarioRepository rur;
+
 
     @RequestMapping(value = "/Sessoes",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
@@ -60,12 +65,12 @@ public class SessaoController {
         return  sessaoRepository.save(Sessao);
 
     }
-//
-//    @RequestMapping(method= RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Sessao atualizaSessao(@RequestBody Sessao Sessao){
-//        return sessaoRepository.save(Sessao);
-//    }
+
+    @RequestMapping(method= RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Sessao atualizaSessao(@RequestBody Sessao Sessao){
+        return sessaoRepository.save(Sessao);
+    }
 
     @RequestMapping(value ="{id}",method= RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -77,16 +82,25 @@ public class SessaoController {
     }
 
     @RequestMapping(value= "/Votar/Usuario/{id}/Pauta/{pauta}/voto/{voto}",method= RequestMethod.GET)
-    //@ResponseStatus(HttpStatus.CREATED)
-    @ResponseStatus
+    @ResponseStatus(HttpStatus.CREATED)
     public String votar(@PathVariable("id") Integer id_usuario,@PathVariable("pauta") Integer id_pauta, @PathVariable("voto")  String voto) {
 
         voto = Normalizer.normalize(voto,Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         Boolean verificaUsuario = usuarioRepository.existsById(id_usuario);
         Boolean verificaPauta = pautaRepository.existsById(id_pauta);
-
+        Integer validaUsuario = rur.validaUsuarioJavotou(id_usuario,id_pauta);
         Sessao sessao = sessaoRepository.retornaSessao(id_pauta);
+        Pauta pauta = pautaRepository.retornarPautas(id_pauta);
+
         Integer valorAntigo = 0;
+         System.out.println(validaUsuario);
+        if (sessao==null) {
+            return "Sessao Inválida";
+        }
+
+        if (validaUsuario > 0){
+            return "Voto invalido.";
+        }
 
         if (!verificaUsuario) {
             return "Usuário invalido";
@@ -101,10 +115,15 @@ public class SessaoController {
 
         if (voto.equalsIgnoreCase("SIM")){
              valorAntigo = sessao.getSim();
+
+            rur.save(new RegistroVotosUsuarios(id_usuario, voto, pauta));
+
             sessao.setSim(valorAntigo+1);
            sessaoRepository.save(sessao);
         }else if (voto.equalsIgnoreCase("NAO")){
             valorAntigo = sessao.getNao();
+
+            rur.save(new RegistroVotosUsuarios(id_usuario, voto, pauta));
             sessao.setNao(valorAntigo+1);
             sessaoRepository.save(sessao);
         } else {
