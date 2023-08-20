@@ -39,6 +39,8 @@ public class SessaoController {
     @Autowired
     private RegistroUsuarioRepository rur;
 
+    private static String sessaoNaoencontrada = "Nenhuma sessao encontrada";
+
 
     @RequestMapping(value = "/Sessoes",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
@@ -47,7 +49,7 @@ public class SessaoController {
         List<Sessao> todosSessao = sessaoRepository.findAll();
 
         if (todosSessao.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Nenhum Sessao encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,sessaoNaoencontrada);
         }
 
         return  todosSessao;
@@ -56,13 +58,17 @@ public class SessaoController {
     @RequestMapping(value = "{id}",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
     public Sessao retornaSessaoPorId(@PathVariable("id") Integer id){
-        return sessaoRepository.findById(id).orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return sessaoRepository.findById(id).orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND,sessaoNaoencontrada));
     }
 
     @RequestMapping(method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public Sessao cadastraSessao(@RequestBody Sessao Sessao){
-        return  sessaoRepository.save(Sessao);
+    public Sessao cadastraSessao(@RequestBody Sessao sessao){
+        if ((sessao.getId_sessao() != null)) {
+            if (sessaoRepository.existsById(sessao.getId_sessao()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sessao ja registrada");
+        }
+            return  sessaoRepository.save(sessao);
 
     }
 
@@ -76,73 +82,63 @@ public class SessaoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSessao(@PathVariable("id") Integer id){
         if (sessaoRepository.findById(id).isEmpty() ) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,sessaoNaoencontrada);
         }
         sessaoRepository.deleteById(id);
     }
 
     @RequestMapping(value= "/Votar/Usuario/{id}/Pauta/{pauta}/voto/{voto}",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
-    public String votar(@PathVariable("id") Integer id_usuario,@PathVariable("pauta") Integer id_pauta, @PathVariable("voto")  String voto) {
+    public Optional<Sessao> votar(@PathVariable("id") Integer id_usuario,@PathVariable("pauta") Integer id_pauta, @PathVariable("voto")  String voto) {
 
         voto = Normalizer.normalize(voto,Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         Boolean verificaUsuario = usuarioRepository.existsById(id_usuario);
-        Boolean verificaPauta = pautaRepository.existsById(id_pauta);
         Integer validaUsuario = rur.validaUsuarioJavotou(id_usuario,id_pauta);
-        Sessao sessao = sessaoRepository.retornaSessao(id_pauta);
+        Sessao sessao1 = sessaoRepository.retornaSessao(id_pauta);
         Pauta pauta = pautaRepository.retornarPautas(id_pauta);
 
         Integer valorAntigo = 0;
          System.out.println(validaUsuario);
-        if (sessao==null) {
-            return "Sessao Inválida";
+        if (sessao1==null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Pauta ou sessao inexistente");
         }
 
         if (validaUsuario > 0){
-            return "Voto invalido.";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Voto já computado para o usuario "+id_usuario);
         }
 
         if (!verificaUsuario) {
-            return "Usuário invalido";
-        }
-        if (!verificaPauta) {
-            return "Pauta invalida";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum usuario encontrado");
         }
 
-        if (sessao.getStatus().equals(StatusSessao.FECHADA)){
-            return "Sessão Fechada";
+        if (sessao1.getStatus().equals(StatusSessao.FECHADA)){
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sessao Fechada");
         }
 
         if (voto.equalsIgnoreCase("SIM")){
-             valorAntigo = sessao.getSim();
+             valorAntigo = sessao1.getSim();
 
             rur.save(new RegistroVotosUsuarios(id_usuario, voto, pauta));
 
-            sessao.setSim(valorAntigo+1);
-           sessaoRepository.save(sessao);
+            sessao1.setSim(valorAntigo+1);
+            sessaoRepository.save(sessao1);
         }else if (voto.equalsIgnoreCase("NAO")){
-            valorAntigo = sessao.getNao();
+            valorAntigo = sessao1.getNao();
 
             rur.save(new RegistroVotosUsuarios(id_usuario, voto, pauta));
-            sessao.setNao(valorAntigo+1);
-            sessaoRepository.save(sessao);
+
+            sessao1.setNao(valorAntigo+1);
+            sessaoRepository.save(sessao1);
         } else {
-            return "Voto Invalido";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Voto invalido digite somente SIM ou NAO");
         }
 
-        return id_usuario+" "+id_pauta+" "+voto+" "+verificaUsuario+" "+verificaPauta+" "+sessao.toString();
-
+        return sessaoRepository.findById(sessao1.getId_sessao());
 
 
     }
 
-//    @GetMapping(value="/BuscaSessaoPorNome")
-//    public List<Sessao> filtro(String filtro){
-//        ExampleMatcher exampExampleMatcherle =
-//                ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-//        Example example = Example.of(filtro,exampExampleMatcherle);
-//        return sessaoRepository.findAll(example);
-//    }
+
 
 }
 

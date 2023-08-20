@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,6 +72,8 @@ public class SessaoVotacaoApplication {
 //            sessao.setDt_fechamento(LocalDate.parse(formatador.format(dia)));
             sessao.setDt_fechamento(dia);
             sessaoRepository.save(sessao);
+
+          //  LocalDateTime d = LocalDate.
 ////
 //            sessaoController.votar(1,1,"NÃO");
 //            sessaoController.votar(2,1,"NÃO");

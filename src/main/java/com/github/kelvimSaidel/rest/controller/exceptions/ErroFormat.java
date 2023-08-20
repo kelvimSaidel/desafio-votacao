@@ -1,6 +1,6 @@
 package com.github.kelvimSaidel.rest.controller.exceptions;
 
-public class ErroController {
+public class ErroFormat {
 
     private Long timeStamp;
     private Integer status;
@@ -8,7 +8,7 @@ public class ErroController {
     private String message;
     private String path;
 
-    public ErroController(Long timeStamp, Integer status, String error, String message, String path) {
+    public ErroFormat(Long timeStamp, Integer status, String error, String message, String path) {
         this.timeStamp = timeStamp;
         this.status = status;
         this.error = error;
@@ -16,7 +16,7 @@ public class ErroController {
         this.path = path;
     }
 
-    public ErroController() {
+    public ErroFormat() {
     }
 
     public Long getTimeStamp() {

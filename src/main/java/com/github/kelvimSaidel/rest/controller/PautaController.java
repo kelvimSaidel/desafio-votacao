@@ -16,12 +16,14 @@ public class PautaController {
 
     @Autowired
     private PautaRepository pautaRepository;
+
+    private static String pautaNaoEncontrada = "Nenhuma pauta encotrada";
     @RequestMapping(value = "/PautasCadastradas",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
     public List<Pauta> retornaPauta(){
         List<Pauta> todosPauta = pautaRepository.findAll();
         if (todosPauta.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Nenhum pauta encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,pautaNaoEncontrada);
         }
         return todosPauta;
     }
@@ -29,12 +31,17 @@ public class PautaController {
     @RequestMapping(value = "{id}",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
     public Pauta retornaPautaPorId(@PathVariable("id") Integer id){
-        return pautaRepository.findById(id).orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return pautaRepository.findById(id).orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND,pautaNaoEncontrada));
     }
 
     @RequestMapping(method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     public Pauta cadastraPauta(@RequestBody Pauta pauta){
+        if ((pauta.getId_pauta() != null)) {
+            if (pautaRepository.existsById(pauta.getId_pauta()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Pauta ja registrada");
+        }
+
         return  pautaRepository.save(pauta);
 
     }
@@ -49,16 +56,11 @@ public class PautaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePauta(@PathVariable("id") Integer id){
         if (pautaRepository.findById(id).isEmpty() ) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,pautaNaoEncontrada);
         }
         pautaRepository.deleteById(id);
     }
 
-//    @RequestMapping(method= RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Pauta atualizaPauta(@RequestBody String nome, Integer id, Long cpf){
-//        return pautaRepository.atualizaPauta(id,nome,cpf);
-//    }
 
 
 }
