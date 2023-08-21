@@ -1,8 +1,6 @@
 create database sessao_votacao;
 
 use sessao_votacao;
-
-
 create table usuario
 (
 id_usuario integer primary key auto_increment,
