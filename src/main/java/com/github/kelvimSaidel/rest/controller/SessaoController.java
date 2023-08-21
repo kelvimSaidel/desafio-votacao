@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.Normalizer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +43,7 @@ public class SessaoController {
 
     private static String sessaoNaoencontrada = "Nenhuma sessao encontrada";
 
+    private static final DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:SS");
 
     @RequestMapping(value = "/Sessoes",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.FOUND)
@@ -68,6 +71,13 @@ public class SessaoController {
             if (sessaoRepository.existsById(sessao.getId_sessao()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sessao ja registrada");
         }
+          //Se a vigencia for informada a dt_fechamente recebe a hora local mais a vigencia informada, se nao recebe
+          //a hora local mais 1 min.
+          String verifcaSeTempoVigenciaNull = sessao.getTempoVigenciaEmMinutos();
+
+          if (verifcaSeTempoVigenciaNull != null) {
+              sessao.setDt_fechamento(LocalDateTime.now().plusMinutes(Long.parseLong(sessao.getTempoVigenciaEmMinutos())).format(formatador));
+          }
             return  sessaoRepository.save(sessao);
 
     }
@@ -90,12 +100,13 @@ public class SessaoController {
     @RequestMapping(value= "/Votar/Usuario/{id}/Pauta/{pauta}/voto/{voto}",method= RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Sessao> votar(@PathVariable("id") Integer id_usuario,@PathVariable("pauta") Integer id_pauta, @PathVariable("voto")  String voto) {
-
+        //retira acentos dos votos
         voto = Normalizer.normalize(voto,Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         Boolean verificaUsuario = usuarioRepository.existsById(id_usuario);
         Integer validaUsuario = rur.validaUsuarioJavotou(id_usuario,id_pauta);
         Sessao sessao1 = sessaoRepository.retornaSessao(id_pauta);
         Pauta pauta = pautaRepository.retornarPautas(id_pauta);
+        String horaLocal = LocalDateTime.now().format(formatador);
 
         Integer valorAntigo = 0;
          System.out.println(validaUsuario);
@@ -111,8 +122,10 @@ public class SessaoController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum usuario encontrado");
         }
 
-        if (sessao1.getStatus().equals(StatusSessao.FECHADA)){
-             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sessao Fechada");
+        if (horaLocal.compareTo(sessao1.getDt_fechamento())>0){
+            sessao1.setStatus(StatusSessao.FECHADA);
+            sessaoRepository.save(sessao1);
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sessao Fechada");
         }
 
         if (voto.equalsIgnoreCase("SIM")){

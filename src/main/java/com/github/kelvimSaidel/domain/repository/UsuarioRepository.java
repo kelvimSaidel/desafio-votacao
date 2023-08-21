@@ -15,11 +15,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
 
 
-//    @Query(value="update Usuario u set u.nome_usuario = ?2, u.cpf = ?3 where u.id = ?1",nativeQuery = true)
-//    @Transactional
-//    @Modifying
-//    void atualizaUsuario(Integer userId, String nome, Long cpf );
-
 
 
     }

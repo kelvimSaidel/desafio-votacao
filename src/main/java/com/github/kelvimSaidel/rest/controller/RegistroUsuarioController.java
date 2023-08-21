@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class RegistroUsuarioController {
 
-
     @Autowired
     private RegistroUsuarioRepository registroVotosUsuarios;
 

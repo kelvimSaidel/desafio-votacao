@@ -41,9 +41,7 @@ public class PautaController {
             if (pautaRepository.existsById(pauta.getId_pauta()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Pauta ja registrada");
         }
-
         return  pautaRepository.save(pauta);
-
     }
 
     @RequestMapping(method= RequestMethod.POST)

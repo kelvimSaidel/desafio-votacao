@@ -28,7 +28,6 @@ public class UsuarioController {
           List<Usuario> todosUsuario = usuarioRepository.findAll();
           if (todosUsuario.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,UsuarioNaoEncontrado);
-
           }
           return todosUsuario;
       }

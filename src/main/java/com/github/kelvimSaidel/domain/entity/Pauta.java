@@ -2,6 +2,7 @@ package com.github.kelvimSaidel.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -9,15 +10,15 @@ import java.util.List;
 public class Pauta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_pauta;
+
+    @NonNull
     private String nome_pauta;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
-
 
     @OneToOne(mappedBy = "pauta")
     @JsonIgnore
