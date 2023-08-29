@@ -52,7 +52,13 @@ public class UsuarioController {
     @RequestMapping(method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario atualizaUsuario(@RequestBody Usuario usuario){
-        return usuarioRepository.save(usuario);
+          if (usuario.getId_usuario()!= null) {
+              if (!usuarioRepository.existsById(usuario.getId_usuario())) {
+                  throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuario invalido, insira uma id cadastrado");
+              }
+
+          }
+         return usuarioRepository.save(usuario);
     }
 
     @RequestMapping(value ="{id}",method= RequestMethod.DELETE)
