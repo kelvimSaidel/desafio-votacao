@@ -84,8 +84,17 @@ public class SessaoController {
 
     @RequestMapping(method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Sessao atualizaSessao(@RequestBody Sessao Sessao){
-        return sessaoRepository.save(Sessao);
+    public Sessao atualizaSessao(@RequestBody Sessao sessao){
+        if (!sessaoRepository.existsById(sessao.getId_sessao())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Sessao não registrada");
+        }
+        if (!pautaRepository.existsById(sessao.getPauta().getId_pauta())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Pauta não registrada");
+        }
+        if (!usuarioRepository.existsById(sessao.getPauta().getUsuario().getId_usuario())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não cadastrado");
+        }
+        return sessaoRepository.save(sessao);
     }
 
     @RequestMapping(value ="{id}",method= RequestMethod.DELETE)
