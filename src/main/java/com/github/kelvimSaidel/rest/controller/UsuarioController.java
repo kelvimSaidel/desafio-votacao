@@ -3,16 +3,12 @@ package com.github.kelvimSaidel.rest.controller;
 
 import com.github.kelvimSaidel.domain.entity.Usuario;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
-import com.github.kelvimSaidel.rest.controller.exceptions.ErroFormat;
-import com.github.kelvimSaidel.rest.controller.exceptions.ErroPadraoController;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/Usuario")

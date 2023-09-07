@@ -35,6 +35,10 @@ public class Usuario {
         return id_usuario;
     }
 
+    public void setId_usuario(Integer id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
     public String getNome_usuario() {
         return nome_usuario;
     }

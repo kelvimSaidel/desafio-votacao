@@ -1,4 +1,4 @@
-package com.github.kelvimSaidel.rest.controller.exceptions;
+package com.github.kelvimSaidel.exceptions;
 
 
 import jakarta.servlet.http.HttpServletRequest;
