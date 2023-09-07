@@ -43,7 +43,7 @@ public class PautaController {
         return pautaService.retornaPautaPorId(id);
     }
 
-        @RequestMapping(method= RequestMethod.PUT)
+        @RequestMapping(value = "/Pauta",method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     public PautaDto cadastraPauta(@RequestBody PautaDto pauta){
         if ((pauta.getId_pauta() != null)) {
@@ -58,7 +58,7 @@ public class PautaController {
        }
 
 
-    @RequestMapping(method= RequestMethod.POST)
+    @RequestMapping(value = "/Pauta",method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public PautaDto atualizaPauta(@RequestBody PautaDto pauta){
         if (!pautaRepository.existsById(pauta.getId_pauta())) {
