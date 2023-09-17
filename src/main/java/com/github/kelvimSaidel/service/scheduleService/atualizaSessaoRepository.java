@@ -20,7 +20,7 @@ public class atualizaSessaoRepository {
     @Scheduled(fixedDelay = 60000)
     public void atualizaStatusSessao(){
         logger.info("Entrou em atualizaStatusSessao");
-        sessaoRepository.atualizaStatusData();
+         sessaoRepository.atualizaStatusSessao();
 
     }
 

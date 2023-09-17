@@ -82,7 +82,7 @@ public class SessaoController {
         }
           //Se a vigencia for informada a dt_fechamente recebe a hora local mais a vigencia informada, se nao recebe
           //a hora local mais 1 min.
-        if (!pautaRepository.existsById(sessao.getId_pauta())) {
+        if (!pautaRepository.existsById(sessao.getId_pauta()) || sessao.getId_pauta() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Pauta não registrada");
         }
 

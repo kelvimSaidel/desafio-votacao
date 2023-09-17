@@ -12,15 +12,11 @@ public interface SessaoRepository extends JpaRepository<Sessao, Integer> {
 
     @Query(value = "select * from sessao where id_pauta  = :id_pauta",nativeQuery = true)
     Sessao retornaSessao(@Param("id_pauta") Integer id_pauta);
-//    @Query(value="update Sessao u set u.dt_fechamento = ?1 where u.id_sessao = ?2",nativeQuery = true)
-//    @Transactional
-//    @Modifying
-//    void insereDtaFechamento(String tempoDevigencia, Integer id_sessao );
 
-      @Query(value="update Sessao u set u.status = 'FECHADA' where u.status = \"ABERTA\" " +
-              "and dt_fechamento < date_format(SYSDATE(),'dd/MM/yyyy HH:mm:SS') ;\n",nativeQuery = true)
-      @Transactional
-      @Modifying
-      void atualizaStatusData();
+    @Query(value="update Sessao u set u.status = 'FECHADA' where u.status = \"ABERTA\"" +
+            " and dt_fechamento < date_format(SYSDATE(),'%d/%m/%Y %H:%i:%s') ;\n",nativeQuery = true)
+    @Transactional
+    @Modifying
+    void atualizaStatusSessao();
 
 }
