@@ -17,6 +17,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.Normalizer;
@@ -32,132 +33,9 @@ import java.util.Optional;
 
 @SpringBootApplication
 @RestController
+@EnableScheduling
 public class SessaoVotacaoApplication {
 
-
-//    @Bean
-//    public CommandLineRunner init(@Autowired UsuarioRepository usuarioRepository,
-//                                  @Autowired PautaRepository pautaRepository,
-//                                  @Autowired SessaoRepository sessaoRepository,
-//                                  @Autowired SessaoController sessaoController,
-//                                  @Autowired RegistroUsuarioRepository registroUsuarioRepository){
-//        return args -> {
-//            Usuario usuario1 = new Usuario();
-//            usuario1.setNome_usuario("Kelvim");
-//            usuario1.setCpf(123456711);
-//            usuarioRepository.save(usuario1);
-//
-//            Usuario usuario2 = new Usuario();
-//            usuario2.setNome_usuario("Joao");
-//            usuario2.setCpf(123456717);
-//            usuarioRepository.save(usuario2);
-//
-//            Usuario usuario3 = new Usuario();
-//            //  usuario3.setId_usuario(2);
-//            usuario3.setNome_usuario("Marcelo");
-//            usuario3.setCpf(123456722);
-//            usuarioRepository.save(usuario3);
-
-//            Pauta pauta1 = new Pauta();
-//            pauta1.setNome_pauta("Pauta1");
-//            pauta1.setUsuario(usuario1);
-////
-//            pautaRepository.save(pauta1);
-
-// //           LocalDateTime dia = LocalDateTime.
-////            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//
-//   //       Sessao sessao = new Sessao(1,StatusSessao.ABERTA,"3",pauta1);
-//             Sessao sessao1 = new Sessao(pauta1);
-//
-////                 Sessao sessao = new Sessao();
-//
-////            Sessao sessao = new Sessao();
-////            sessao.setPauta(pauta1);
-//////            sessao.setSim(1);
-//////            sessao.setNao(1);
-////              sessao.setStatus(StatusSessao.ABERTA);
-//////            sessao.setDt_abertura(dia);
-//////            sessao.setDt_fechamento(LocalDate.parse(formatador.format(dia)));
-//////            sessao.setDt_fechamento(dia);
-// //         sessaoRepository.(sessao);
-//
-//     sessaoController.cadastraSessao(sessao1);
-////
-////
-////            DateTimeFormatter dd =  DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:SS");
-////
-////             LocalDateTime d = LocalDateTime.now();
-//////             System.out.println(d.format(dd));
-////             String tst = d.plusMinutes(2).format(dd);
-////             LocalDateTime y = d.plusMinutes(3 );
-////             String tst1 = y.format(dd);
-////             System.out.println(tst1.compareTo(tst)>0 ? tst1+"tst1" : tst+"tst");
-////
-//
-//
-//
-//////
-////            sessaoController.votar(1,1,"NÃO");
-////            sessaoController.votar(2,1,"NÃO");
-////
-//////           RegistroVotosUsuarios rup = new RegistroVotosUsuarios();
-//////           rup.setId_usuario(1);
-//////           rup.setPauta(pauta1);
-//////
-//////
-//////            registroUsuarioRepository.save(rup);
-////////
-//////            RegistroVotosUsuarios rup1 = new RegistroVotosUsuarios();
-//////            rup1.setId_usuario(1);
-//////            rup1.setPauta(pauta1);
-//////            System.out.println(rup1.toString());
-//////            registroUsuarioRepository.save(rup1);
-//////
-//////
-//////            RegistroVotosUsuarios rup2 = new RegistroVotosUsuarios();
-//////            rup2.setId_usuario(3);
-//////            rup2.setPauta(pauta1);
-//////
-//////           registroUsuarioRepository.save(rup2);
-////
-////           String verificaResultado = sessaoController.votar(1,1,"NÃO");
-////
-////
-////            Integer validaUsuario = registroUsuarioRepository.validaUsuarioJavotou(1,1);
-////           Pauta retornapauta = pautaRepository.retornarPautas(1);
-////           System.out.println(validaUsuario);
-////            System.out.println(retornapauta);
-////            System.out.println(verificaResultado);
-////
-////
-////
-////
-////
-////
-////
-////
-////
-//////
-////        //
-//////
-////////
-//////           List<Sessao> sessoes = sessaoRepository.findAll();
-////////            Optional<Sessao> sessoes1 = sessaoRepository.findById(1);
-////////            System.out.println(sessoes1);
-//////            sessoes.forEach(System.out::println);
-////////
-//////           System.out.println(sessoes.toString());
-//////
-//////            System.out.println(rup2.toString());
-//////            System.out.println(rup1.toString());
-//////
-////////
-////////            pautaRepository.save(pauta1);
-//////
-//////
-//        };
-//    }
 
     public static void main(String[] args) {
         SpringApplication.run(SessaoVotacaoApplication.class,args);
