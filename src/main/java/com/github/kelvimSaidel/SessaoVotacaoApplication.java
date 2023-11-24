@@ -36,7 +36,6 @@ import java.util.Optional;
 @EnableScheduling
 public class SessaoVotacaoApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(SessaoVotacaoApplication.class,args);
 
