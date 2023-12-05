@@ -3,6 +3,7 @@ package com.github.kelvimSaidel.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import jakarta.persistence.*;
+import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Usuario {
 
     @Id
@@ -30,14 +33,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Pauta> pautas;
 
-//    @Autowired
-////    @JsonIgnore
-//    private UsuarioRepository usuarioRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
-
-    public Usuario() {
-    }
 
     public Usuario(Integer id_usuario, String nome_usuario, String cpf) {
         this.id_usuario = id_usuario;
@@ -45,58 +42,19 @@ public class Usuario {
         this.cpf = cpf;
     }
 
-    public Integer getId_usuario() {
-        return id_usuario;
-    }
 
-    public void setId_usuario(Integer id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public String getNome_usuario() {
-        return nome_usuario;
-    }
-
-    public void setNome_usuario(String nome_usuario) {
-        this.nome_usuario = nome_usuario;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id='" + id_usuario + '\'' +
-                ", nome='" + nome_usuario + '\'' +
-                ", cpf=" + cpf +
-                '}';
-    }
-
-    public List<Pauta> getPautas() {
-        return pautas;
-    }
-
-    public void setPautas(List<Pauta> pautas) {
-        this.pautas = pautas;
-    }
 
     public Boolean validaCpf(String cpf, Long existeCpf) {
         String cpfSoDigitos = cpf.replaceAll("[^0-9]","");
 
 
         if (existeCpf > 0) {
-            logger.info(cpfSoDigitos+" "+existeCpf);
+            logger.info(cpfSoDigitos+" "+existeCpf+" 1");
              return false;
         }
 
         if (cpfSoDigitos.length() != 11) {
-            logger.info(cpfSoDigitos+" "+cpf.length());
+            logger.info(cpfSoDigitos+" "+cpf.length()+" 2");
             return false;
         } else if (cpfSoDigitos.equals("11111111111")
                 || cpfSoDigitos.equals("22222222222")
@@ -108,7 +66,7 @@ public class Usuario {
                 || cpfSoDigitos.equals("88888888888")
                 || cpfSoDigitos.equals("99999999999")
         ) {
-            logger.info(cpfSoDigitos+" 3333");
+            logger.info(cpfSoDigitos+"3");
             return false;
 
         }

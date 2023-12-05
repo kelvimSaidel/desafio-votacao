@@ -3,6 +3,9 @@ package com.github.kelvimSaidel.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.kelvimSaidel.domain.enums.StatusSessao;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -11,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Sessao {
 
     @Id
@@ -42,8 +47,6 @@ public class Sessao {
 
     private String tempoVigenciaEmMinutos;
 
-    public Sessao() {
-    }
 
     public Sessao(Pauta pauta) {
         this.pauta = pauta;
@@ -61,75 +64,6 @@ public class Sessao {
         this.pauta = pauta;
     }
 
-    public Integer getId_sessao() {
-        return id_sessao;
-    }
-
-    public Integer getSim() {
-        return sim;
-    }
-
-    public void setSim(Integer sim) {
-        this.sim = sim;
-    }
-
-    public Integer getNao() {
-        return nao;
-    }
-
-    public void setNao(Integer nao) {
-        this.nao = nao;
-    }
-
-    public StatusSessao getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusSessao status) {
-        this.status = status;
-    }
-
-    public String getDt_abertura() {
-        return dt_abertura;
-    }
-
-    public String getDt_fechamento() {
-        return dt_fechamento;
-    }
-
-    public void setDt_fechamento(String dt_fechamento) {
-        this.dt_fechamento = dt_fechamento;
-    }
-
-
-    public Pauta getPauta() {
-        return pauta;
-    }
-
-    public void setPauta(Pauta pauta) {
-        this.pauta = pauta;
-    }
-
-    public String getTempoVigenciaEmMinutos() {
-        return tempoVigenciaEmMinutos;
-    }
-
-    public void setTempoVigenciaEmMinutos(String tempoVigenciaEmMinutos) {
-        this.tempoVigenciaEmMinutos = tempoVigenciaEmMinutos;
-    }
-
-    @Override
-    public String toString() {
-        return "Sessao{" +
-                "id_sessao=" + id_sessao +
-                ", sim=" + sim +
-                ", nao=" + nao +
-                ", status=" + status +
-                ", dt_abertura=" + dt_abertura +
-                ", dt_fechamento=" + dt_fechamento +
-                ", pauta=" + pauta.getId_pauta() +
-                '}';
-    }
 }
 
 
