@@ -1,11 +1,17 @@
 package com.github.kelvimSaidel.rest.dto;
 
 import com.github.kelvimSaidel.domain.enums.StatusSessao;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class SessaoDto {
 
     private Integer id_sessao;
+
+    @NotNull(message="{id.pauta.obrigatorio}")
     private Integer id_pauta;
+
+    @NotEmpty(message="{nome.pauta.obrigatorio}")
     private String Nome_pauta;
 
     private StatusSessao status;

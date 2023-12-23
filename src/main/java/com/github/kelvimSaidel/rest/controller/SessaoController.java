@@ -11,6 +11,7 @@ import com.github.kelvimSaidel.domain.repository.SessaoRepository;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import com.github.kelvimSaidel.rest.dto.SessaoDto;
 import com.github.kelvimSaidel.service.SessaoService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +76,14 @@ public class SessaoController {
 
     @RequestMapping(value = "/Sessao",method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public SessaoDto cadastraSessao(@RequestBody SessaoDto sessao){
+    public SessaoDto cadastraSessao(@RequestBody @Valid SessaoDto sessao){
         if ((sessao.getId_sessao() != null)) {
             if (sessaoRepository.existsById(sessao.getId_sessao()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sessao ja registrada");
         }
           //Se a vigencia for informada a dt_fechamente recebe a hora local mais a vigencia informada, se nao recebe
           //a hora local mais 1 min.
-        if (!pautaRepository.existsById(sessao.getId_pauta()) || sessao.getId_pauta() == null) {
+        if (!pautaRepository.existsById(sessao.getId_pauta()) ) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Pauta não registrada");
         }
 
@@ -105,7 +106,7 @@ public class SessaoController {
 
     @RequestMapping(value = "/Sessao",method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public SessaoDto atualizaSessao(@RequestBody SessaoDto sessao){
+    public SessaoDto atualizaSessao(@RequestBody @Valid SessaoDto sessao){
         if (!sessaoRepository.existsById(sessao.getId_sessao())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Sessao não registrada");
         }
@@ -139,6 +140,7 @@ public class SessaoController {
         if (sessaoRepository.findById(id).isEmpty() ) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,sessaoNaoencontrada);
         }
+        rur.deletaVotos(sessaoRepository.findById(id).get().getPauta().getId_pauta());
         sessaoRepository.deleteById(id);
     }
 

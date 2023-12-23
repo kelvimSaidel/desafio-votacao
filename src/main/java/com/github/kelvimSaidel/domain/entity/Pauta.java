@@ -2,8 +2,11 @@ package com.github.kelvimSaidel.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.message.Message;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -17,7 +20,6 @@ public class Pauta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_pauta;
 
-    @NonNull
     private String nome_pauta;
 
     @ManyToOne

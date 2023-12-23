@@ -3,6 +3,7 @@ package com.github.kelvimSaidel.rest.controller;
 
 import com.github.kelvimSaidel.domain.entity.Usuario;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,33 +38,33 @@ public class UsuarioController {
 
     @RequestMapping(value = "/Usuario",method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario cadastraUsuario(@RequestBody Usuario usuario){
-          Long existeCpf;
+    public Usuario cadastraUsuario(@RequestBody @Valid Usuario usuario){
+//          Long existeCpf;
           Boolean validaCpf = null;
         if ((usuario.getId_usuario() != null)) {
             if (usuarioRepository.existsById(usuario.getId_usuario()))
               throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Usuario ja registrado");
         }
 
-        existeCpf = usuarioRepository.findAll().stream().filter( c -> c.getCpf().equals(usuario.getCpf())).count();
-        validaCpf = usuario.validaCpf(usuario.getCpf(),existeCpf);
-        if (!validaCpf) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cpf inválido ou já cadastrado");
-        }
+//        existeCpf = usuarioRepository.findAll().stream().filter( c -> c.getCpf().equals(usuario.getCpf())).count();
+//        validaCpf = usuario.validaCpf(usuario.getCpf(),existeCpf);
+//        if (!validaCpf) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cpf inválido ou já cadastrado");
+//        }
 
-        usuario.setCpf(usuario.formataCpf(usuario.getCpf()));
+//        usuario.setCpf(usuario.formataCpf(usuario.getCpf()));
         return  usuarioRepository.save(usuario);
 
     }
 
     @RequestMapping(value = "/Usuario",method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario atualizaUsuario(@RequestBody Usuario usuario){
-        Long existeCpf;
-        Boolean validaCpf = null;
-        String validaFormatoCpf ="";
-        existeCpf = usuarioRepository.findAll().stream().filter( c -> c.getCpf().equals(usuario.getCpf())).count();
-        validaCpf = usuario.validaCpf(usuario.getCpf(),existeCpf);
+    public Usuario atualizaUsuario(@RequestBody @Valid Usuario usuario){
+//        Long existeCpf;
+//        Boolean validaCpf = null;
+//        String validaFormatoCpf ="";
+//        existeCpf = usuarioRepository.findAll().stream().filter( c -> c.getCpf().equals(usuario.getCpf())).count();
+//        validaCpf = usuario.validaCpf(usuario.getCpf(),existeCpf);
         if (usuario.getId_usuario()==null) {
               throw new ResponseStatusException(HttpStatus.NOT_FOUND,"É necessario inserir um ID para alteração de cadastro.");
         }
@@ -73,10 +74,10 @@ public class UsuarioController {
               }
 
         }
-        if (!validaCpf) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cpf inválido ou já cadastrado");
-        }
-        usuario.setCpf(usuario.formataCpf(usuario.getCpf()));
+//        if (!validaCpf) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cpf inválido ou já cadastrado");
+//        }
+//        usuario.setCpf(usuario.formataCpf(usuario.getCpf()));
         return usuarioRepository.save(usuario);
     }
 

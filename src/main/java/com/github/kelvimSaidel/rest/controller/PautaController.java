@@ -7,6 +7,7 @@ import com.github.kelvimSaidel.domain.repository.PautaRepository;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import com.github.kelvimSaidel.rest.dto.PautaDto;
 import com.github.kelvimSaidel.service.PautaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class PautaController {
 
         @RequestMapping(value = "/Pauta",method= RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public PautaDto cadastraPauta(@RequestBody PautaDto pauta){
+    public PautaDto cadastraPauta(@RequestBody @Valid PautaDto pauta){
         if ((pauta.getId_pauta() != null)) {
             if (pautaRepository.existsById(pauta.getId_pauta()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Pauta ja registrada");
@@ -60,7 +61,7 @@ public class PautaController {
 
     @RequestMapping(value = "/Pauta",method= RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public PautaDto atualizaPauta(@RequestBody PautaDto pauta){
+    public PautaDto atualizaPauta(@RequestBody @Valid PautaDto pauta){
         if (!pautaRepository.existsById(pauta.getId_pauta())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Pauta não registrada");
         }

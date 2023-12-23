@@ -6,6 +6,7 @@ import com.github.kelvimSaidel.domain.entity.Usuario;
 import com.github.kelvimSaidel.domain.repository.PautaRepository;
 import com.github.kelvimSaidel.domain.repository.UsuarioRepository;
 import com.github.kelvimSaidel.rest.dto.PautaDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class PautaService {
 
     private static String pautaNaoEncontrada = "Nenhuma pauta encotrada";
 
-    public PautaDto salvarPauta(PautaDto pautaDto){
+    public PautaDto salvarPauta( PautaDto pautaDto){
          Pauta pauta = new Pauta();
          pauta.setNome_pauta(pautaDto.getNome_pauta());
          Usuario usuarioPauta = new Usuario();

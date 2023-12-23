@@ -1,13 +1,17 @@
 package com.github.kelvimSaidel.rest.dto;
 
 import com.github.kelvimSaidel.domain.entity.Pauta;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class PautaDto {
 
     private Integer id_pauta;
 
+    @NotEmpty(message="{nome.pauta.obrigatorio}")
     private String nome_pauta;
 
+    @NotNull(message="{id.usuario.obrigatorio}")
     private Integer id_usuario;
 
     public PautaDto() {

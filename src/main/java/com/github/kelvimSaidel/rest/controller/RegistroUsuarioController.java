@@ -21,4 +21,5 @@ public class RegistroUsuarioController {
         return  registroVotosUsuarios.save(voto);
 
     }
+
 }
