@@ -106,9 +106,10 @@ para atualizar utiliza-se:
 ```
 
 ```JSON
-{
-     "id_pauta": 1,
-     "nome_pauta": "Pauta1"
+{    
+     "id_sessao": 7,
+     "id_pauta": 5,
+     "nome_pauta": "Pauta5"
 }
 ```
 
