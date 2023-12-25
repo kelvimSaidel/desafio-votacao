@@ -119,3 +119,8 @@ E por fim para votar utiliza-se:
 http://localhost:8080/sessao-votacao/Sessao/Votar/Usuario/{id_usuario}/Pauta/{id_pauta}/voto/{SIM ou NAO}
 
 ```
+A documentação completa da API pode ser visualizada através do link:
+
+```
+https://documenter.getpostman.com/view/29104297/2s9Ykt3dzP
+```
